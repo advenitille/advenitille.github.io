@@ -64,13 +64,21 @@ collections:
         name: category
         widget: select
         options: ['Commercial', 'Short-form', 'Color', 'YouTube Shows', 'Motion & AI', 'Travel']
+      - label: Also show in
+        name: alsoIn
+        widget: select
+        multiple: true
+        required: false
+        default: []
+        hint: 'Extra portfolio tabs, e.g. a YouTube show where you also did the color grade.'
+        options: ['Commercial', 'Short-form', 'Color', 'YouTube Shows', 'Motion & AI', 'Travel']
       - label: My role
         name: roles
         widget: select
         multiple: true
         min: 1
         default: ['Edit']
-        options: ['Edit', 'Color', 'Motion', 'Sound', 'Consulting']
+        options: ['Edit', 'Color', 'Motion', 'Sound', 'Script', 'Research', 'Producing', 'Consulting']
       - label: Video link
         name: video
         widget: string
@@ -95,6 +103,12 @@ collections:
         widget: image
         media_processing: { enabled: true, format: { enabled: true, default: webp }, quality: 82, strip_metadata: true, width: 1600 }
         hint: 'Any image format. It is converted to a light WebP automatically. Vertical videos: use a vertical frame.'
+      - label: Cover for the Color tab
+        name: colorCover
+        widget: image
+        required: false
+        media_processing: { enabled: true, format: { enabled: true, default: webp }, quality: 85, strip_metadata: true, width: 2400 }
+        hint: 'Optional. Shown instead of the cover when the Color tab is open — e.g. graded frames from the video.'
       - label: Video format
         name: format
         widget: select
@@ -113,6 +127,7 @@ collections:
         required: false
       - { label: Year, name: year, widget: number, value_type: int, required: false }
       - { label: Order, name: order, widget: number, value_type: int, default: 100, hint: 'Lower numbers appear first.' }
+      - { label: Order in the Color tab, name: colorOrder, widget: number, value_type: int, required: false, hint: 'Optional. Overrides Order only in the Color tab.' }
       - { label: Hidden, name: draft, widget: boolean, default: false, required: false, hint: 'Hide this project from the site without deleting it.' }
       - { label: Description, name: body, widget: markdown, buttons: [bold, italic, link], editor_components: [] }
 
