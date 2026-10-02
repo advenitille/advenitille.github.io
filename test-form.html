@@ -35,7 +35,7 @@
     s.className = ''; s.textContent = 'Отправляю…';
     const t0 = performance.now();
     try {
-      const r = await fetch('https://advenitille-api.cher10101077.workers.dev/api/lead/', {
+      const r = await fetch('https://api.advenitille.com/api/lead/', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)
       });
       const sec = ((performance.now() - t0) / 1000).toFixed(1);

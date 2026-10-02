@@ -16,9 +16,10 @@
 <table id="t"></table>
 <p><small id="ua"></small></p>
 <script>
-  const W = 'https://advenitille-api.cher10101077.workers.dev';
+  const W = 'https://api.advenitille.com';
   const tests = [
     ['GitHub Pages (этот сайт)', location.origin + '/favicon.svg', 'cors'],
+    ['Сервис формы (workers.dev, старый)', 'https://advenitille-api.cher10101077.workers.dev/healthz', 'no-cors'],
     ['Сервис формы — проверка связи', W + '/healthz', 'no-cors'],
     ['Сервис формы — предварительный запрос', W + '/api/lead/', 'preflight'],
     ['Сайт Cloudflare', 'https://www.cloudflare.com/favicon.ico', 'no-cors'],
