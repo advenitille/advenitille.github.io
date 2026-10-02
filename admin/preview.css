@@ -1,0 +1,29 @@
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-Variable.woff2') format('woff2');
+  font-weight: 300 900;
+}
+
+@font-face {
+  font-family: 'Stardom';
+  src: url('/fonts/Stardom-Regular.woff2') format('woff2');
+}
+
+html,
+body {
+  background: #0a0a09;
+  color: #ecebe6;
+  font-family: 'Satoshi', system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+h1,
+h2 {
+  font-family: 'Stardom', Georgia, serif;
+  font-weight: 400;
+}
+
+img {
+  max-width: 100%;
+}

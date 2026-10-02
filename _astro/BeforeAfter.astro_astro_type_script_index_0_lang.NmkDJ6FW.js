@@ -1,0 +1,1 @@
+document.querySelectorAll(`[data-ba]`).forEach(e=>{let t=e.querySelector(`.range`);t?.addEventListener(`input`,()=>e.style.setProperty(`--pos`,`${t.value}%`))});

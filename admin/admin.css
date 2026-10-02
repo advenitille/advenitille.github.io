@@ -1,0 +1,14 @@
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-Variable.woff2') format('woff2');
+  font-weight: 300 900;
+  font-display: swap;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+  font-family: 'Satoshi', system-ui, -apple-system, 'Segoe UI', sans-serif !important;
+}

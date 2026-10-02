@@ -1,0 +1,195 @@
+# Decap CMS configuration — https://decapcms.org/docs/configuration-options/
+# The repository on GitHub that stores the site (owner: advenitille).
+backend:
+  name: github
+  repo: advenitille/advenitille-site
+  branch: main
+  # GitHub login runs on our own server (server/oauth.mjs), not on Netlify.
+  base_url: https://advenitille.com
+  auth_endpoint: oauth/auth
+  commit_messages:
+    create: 'Add {{collection}} “{{slug}}”'
+    update: 'Update {{collection}} “{{slug}}”'
+    delete: 'Remove {{collection}} “{{slug}}”'
+    uploadMedia: 'Upload “{{path}}”'
+    deleteMedia: 'Delete “{{path}}”'
+
+# Lets the CMS talk to a local proxy (npx decap-server) when opened on localhost only.
+local_backend: true
+
+site_url: https://advenitille.com
+display_url: https://advenitille.com
+logo_url: /icon-512.png
+locale: en
+
+media_folder: public/uploads
+public_folder: /uploads
+
+# Every uploaded image is resized and converted to WebP in the browser before upload,
+# so 4K PNG/TIFF exports from Resolve become light files that load fast on the site.
+media_processing:
+  enabled: true
+  format: { enabled: true, default: webp }
+  quality: 85
+  strip_metadata: true
+  width: 2400
+
+collections:
+  - name: projects
+    label: Portfolio
+    label_singular: Project
+    description: Every project shown on the Portfolio page. Lower “Order” numbers appear first.
+    folder: src/content/projects
+    create: true
+    delete: true
+    slug: '{{slug}}'
+    extension: md
+    format: frontmatter
+    media_folder: /public/uploads/projects
+    public_folder: /uploads/projects
+    summary: '{{title}} — {{client}} · {{category}}'
+    sortable_fields: ['order', 'title', 'client', 'category']
+    view_filters:
+      - { label: Commercial, field: category, pattern: 'Commercial' }
+      - { label: Short-form, field: category, pattern: 'Short-form' }
+      - { label: Color, field: category, pattern: 'Color' }
+      - { label: YouTube Shows, field: category, pattern: 'YouTube Shows' }
+      - { label: Motion & AI, field: category, pattern: 'Motion & AI' }
+      - { label: Travel, field: category, pattern: 'Travel' }
+      - { label: Hidden (drafts), field: draft, pattern: true }
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Client, name: client, widget: string }
+      - label: Category
+        name: category
+        widget: select
+        options: ['Commercial', 'Short-form', 'Color', 'YouTube Shows', 'Motion & AI', 'Travel']
+      - label: My role
+        name: roles
+        widget: select
+        multiple: true
+        min: 1
+        default: ['Edit']
+        options: ['Edit', 'Color', 'Motion', 'Sound', 'Consulting']
+      - label: Video link
+        name: video
+        widget: string
+        required: false
+        default: ''
+        hint: 'YouTube (your channel or the client’s — watch, youtu.be, Shorts) or Instagram (post / reel). Leave empty to show “Video coming soon”.'
+        pattern: ['^$|^https://(www\.|m\.)?(youtube\.com|youtu\.be|instagram\.com)/.+', 'Paste a YouTube or Instagram link']
+      - label: Also on
+        name: also
+        widget: list
+        required: false
+        default: []
+        hint: 'Other places this work lives, e.g. the original on the client’s YouTube channel or an Instagram post. Shown as “Watch on” links.'
+        field: { label: Link, name: link, widget: string, pattern: ['^https://.+', 'Must start with https://'] }
+      - label: Result
+        name: result
+        widget: string
+        required: false
+        hint: 'Optional, short and quiet — e.g. “4.2M views” or “+38% watch time”.'
+      - label: Cover image
+        name: cover
+        widget: image
+        media_processing: { enabled: true, format: { enabled: true, default: webp }, quality: 82, strip_metadata: true, width: 1600 }
+        hint: 'Any image format. It is converted to a light WebP automatically. Vertical videos: use a vertical frame.'
+      - label: Video format
+        name: format
+        widget: select
+        default: horizontal
+        options:
+          - { label: 'Horizontal 16:9', value: horizontal }
+          - { label: 'Vertical 9:16', value: vertical }
+      - label: Color comparison — before
+        name: before
+        widget: image
+        required: false
+        hint: 'Optional. Ungraded frame. Add together with “after” to show a before/after slider.'
+      - label: Color comparison — after
+        name: after
+        widget: image
+        required: false
+      - { label: Year, name: year, widget: number, value_type: int, required: false }
+      - { label: Order, name: order, widget: number, value_type: int, default: 100, hint: 'Lower numbers appear first.' }
+      - { label: Hidden, name: draft, widget: boolean, default: false, required: false, hint: 'Hide this project from the site without deleting it.' }
+      - { label: Description, name: body, widget: markdown, buttons: [bold, italic, link], editor_components: [] }
+
+  - name: settings
+    label: Site content
+    editor:
+      preview: false
+    files:
+      - name: home
+        label: Home — slides
+        file: src/content/settings/home.json
+        media_folder: /public/uploads/hero
+        public_folder: /uploads/hero
+        fields:
+          - label: Slides
+            name: slides
+            widget: list
+            summary: '{{fields.project}} — {{fields.role}}'
+            hint: 'Landscape frames, any size or format — they are converted to WebP automatically. They play in this order.'
+            fields:
+              - { label: Image, name: image, widget: image }
+              - { label: Project, name: project, widget: string }
+              - { label: What I did, name: role, widget: string }
+
+      - name: site
+        label: General
+        file: src/content/settings/site.json
+        fields:
+          - { label: Site name, name: title, widget: string }
+          - { label: Headline, name: tagline, widget: string }
+          - { label: Home intro, name: intro, widget: text }
+          - { label: SEO description, name: description, widget: text }
+          - { label: Telegram link, name: telegram, widget: string }
+          - { label: Telegram handle, name: telegramHandle, widget: string }
+          - { label: Clients (“Worked with”), name: clients, widget: list, field: { label: Client, name: client, widget: string } }
+
+      - name: services
+        label: Services
+        file: src/content/settings/services.json
+        fields:
+          - { label: Intro, name: intro, widget: text }
+          - label: Services
+            name: items
+            widget: list
+            summary: '{{fields.title}}'
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Short summary, name: summary, widget: string }
+              - { label: Details, name: details, widget: text }
+          - { label: Toolkit, name: tools, widget: list, field: { label: Tool, name: tool, widget: string } }
+
+      - name: pricing
+        label: Pricing
+        file: src/content/settings/pricing.json
+        fields:
+          - { label: Intro, name: intro, widget: text }
+          - label: Packages
+            name: packages
+            widget: list
+            summary: '{{fields.name}} — {{fields.price}}'
+            fields:
+              - { label: Name, name: name, widget: string }
+              - { label: Price, name: price, widget: string, hint: 'For example $600. Write “Quote” for custom work.' }
+              - { label: Unit, name: unit, widget: string, required: false, hint: 'per video, per month…' }
+              - { label: Description, name: description, widget: string }
+              - { label: Included, name: features, widget: list, field: { label: Item, name: item, widget: string } }
+              - { label: Highlight as most popular, name: highlight, widget: boolean, default: false, required: false }
+          - { label: Note under packages, name: note, widget: string }
+
+      - name: faq
+        label: FAQ
+        file: src/content/settings/faq.json
+        fields:
+          - label: Questions
+            name: items
+            widget: list
+            summary: '{{fields.question}}'
+            fields:
+              - { label: Question, name: question, widget: string }
+              - { label: Answer, name: answer, widget: text }
