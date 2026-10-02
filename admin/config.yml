@@ -4,8 +4,8 @@ backend:
   name: github
   repo: advenitille/advenitille-site
   branch: main
-  # GitHub login runs on our own server (server/oauth.mjs), not on Netlify.
-  base_url: https://advenitille.com
+  # GitHub login runs on our form/login service (worker/ + server/oauth.mjs), not on Netlify.
+  base_url: https://api.advenitille.com
   auth_endpoint: oauth/auth
   commit_messages:
     create: 'Add {{collection}} “{{slug}}”'
@@ -147,6 +147,10 @@ collections:
           - { label: SEO description, name: description, widget: text }
           - { label: Telegram link, name: telegram, widget: string }
           - { label: Telegram handle, name: telegramHandle, widget: string }
+          - { label: Email, name: email, widget: string }
+          - { label: X (Twitter) link, name: x, widget: string }
+          - { label: X handle, name: xHandle, widget: string }
+          - { label: Contact form service URL, name: leadEndpoint, widget: string, hint: 'Leave as is unless the form service moves.' }
           - { label: Clients (“Worked with”), name: clients, widget: list, field: { label: Client, name: client, widget: string } }
 
       - name: services
